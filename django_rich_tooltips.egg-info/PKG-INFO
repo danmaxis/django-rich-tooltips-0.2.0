@@ -1,0 +1,75 @@
+Metadata-Version: 2.4
+Name: django-rich-tooltips
+Version: 0.2.0
+Summary: A Django plugin to add rich HTML/Markdown tooltips to the admin interface.
+Home-page: https://github.com/yourusername/django-rich-tooltips
+Author: Manus AI (for User)
+Author-email: <your-email@example.com>
+License: MIT
+Keywords: django admin tooltip markdown html rich interactive
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 5.0
+Classifier: Framework :: Django :: 5.1
+Classifier: Framework :: Django :: 5.2
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Django>=5.0
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: keywords
+Dynamic: license
+Dynamic: license-file
+Dynamic: requires-dist
+Dynamic: requires-python
+Dynamic: summary
+
+# Django Rich Tooltips
+
+[![Version](https://img.shields.io/badge/version-0.2.0-blue)](.)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A Django plugin to add rich, interactive HTML and Markdown tooltips to the admin interface, inspired by interfaces like Crusader Kings.
+
+## Features
+
+*   **Rich Content:** Display tooltips with raw HTML or Markdown.
+*   **Interactive:** Tooltips can be "fixed" by hovering, allowing interaction.
+*   **Visual Timer:** A spinning circle indicates the time until the tooltip is fixed.
+*   **Theme Aware:** Automatically adapts to Django Admin's light/dark themes.
+*   **Dynamic List Tooltips:** Tooltip content in `list_display` can come from model fields or methods.
+*   **Nested Tooltips:** Supports tooltips within fixed tooltips.
+*   **Admin Integration:** Works in list, add, and change views.
+*   **Customizable:** Appearance controlled via CSS.
+
+## Documentation
+
+Full documentation is available in the `docs/` directory:
+
+*   **[Installation](./docs/installation.md)**: How to install and set up the plugin.
+*   **[Usage](./docs/usage.md)**: Examples of how to add tooltips in `admin.py` and templates.
+*   **[Configuration](./docs/configuration.md)**: Details on configurable JavaScript variables.
+*   **[Customization](./docs/customization.md)**: How to customize the appearance using CSS.
+*   **[Development & Testing](./docs/development.md)**: Instructions for setting up a development environment and running tests.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+

@@ -1,0 +1,123 @@
+/* Rich Tooltip CSS Styles - Dark/Light Theme Support */
+
+/* Use Django Admin CSS variables for theming */
+:root {
+    /* Define fallback variables in case Django's are not available */
+    --tooltip-bg-default: #333;
+    --tooltip-fg-default: white;
+    --tooltip-border-default: rgba(255, 255, 255, 0.5);
+    --tooltip-border-spin-default: white;
+    --tooltip-code-bg-default: rgba(0,0,0,0.2);
+    --tooltip-shadow-default: rgba(0,0,0,0.2);
+}
+
+.rich-tooltip-container {
+    position: absolute;
+    /* Use Django vars with fallbacks */
+    background-color: var(--tooltip-bg, var(--tooltip-bg-default));
+    color: var(--tooltip-fg, var(--tooltip-fg-default));
+    border: 1px solid var(--border-color, var(--tooltip-border-default)); /* Add subtle border */
+    padding: 8px 12px;
+    border-radius: 4px;
+    z-index: 1070; /* Ensure it's above most admin elements */
+    display: none; /* Hidden by default */
+    max-width: 350px;
+    pointer-events: none; /* Avoid interfering with mouse events initially */
+    font-size: var(--font-size-small, 0.9em);
+    line-height: 1.4;
+    box-shadow: 0 2px 5px var(--tooltip-shadow, var(--tooltip-shadow-default));
+    position: relative; /* For the timer */
+}
+
+/* Define theme-specific variables based on Django Admin theme */
+/* Light Theme (Default Django Admin) */
+body:not([data-theme="dark"]) {
+    --tooltip-bg: var(--body-bg, #fff);
+    --tooltip-fg: var(--body-fg, #333);
+    --tooltip-border: var(--border-color, #ccc);
+    --tooltip-border-spin: var(--body-fg, #333);
+    --tooltip-code-bg: var(--code-bg, #f8f8f8);
+    --tooltip-shadow: rgba(0,0,0,0.15);
+}
+
+/* Dark Theme (Django Admin) */
+body[data-theme="dark"] {
+    --tooltip-bg: var(--body-bg, #333);
+    --tooltip-fg: var(--body-fg, #eee);
+    --tooltip-border: var(--border-color, #555);
+    --tooltip-border-spin: var(--body-fg, #eee);
+    --tooltip-code-bg: var(--code-bg, #444);
+    --tooltip-shadow: rgba(0,0,0,0.3);
+}
+
+.rich-tooltip-container.fixed {
+    pointer-events: auto; /* Allow interaction when fixed */
+}
+
+/* Timer Styles - Use themed variables */
+.rich-tooltip-timer {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--tooltip-border, var(--tooltip-border-default));
+    border-top-color: var(--tooltip-border-spin, var(--tooltip-border-spin-default)); /* This part will spin */
+    animation: tooltip-timer-spin 1s linear infinite; /* Duration matches JS HOVER_DELAY_MS */
+    display: none; /* Hidden by default, shown by JS */
+}
+
+.rich-tooltip-container.fixing .rich-tooltip-timer {
+    display: block;
+}
+
+@keyframes tooltip-timer-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Basic styling for content inside tooltip - Use themed variables */
+.rich-tooltip-container h1, .rich-tooltip-container h2, .rich-tooltip-container h3 {
+    margin-top: 0.5em;
+    margin-bottom: 0.3em;
+    line-height: 1.2;
+    color: var(--header-fg, var(--tooltip-fg)); /* Use header color if available */
+}
+
+.rich-tooltip-container p {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+}
+
+.rich-tooltip-container ul, .rich-tooltip-container ol {
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
+    padding-left: 20px;
+}
+
+.rich-tooltip-container a {
+    color: var(--link-fg, #447e9b); /* Use Django's link color */
+    text-decoration: none;
+}
+.rich-tooltip-container a:hover {
+    text-decoration: underline;
+}
+
+.rich-tooltip-container code {
+    background-color: var(--tooltip-code-bg, var(--tooltip-code-bg-default));
+    padding: 1px 3px;
+    border-radius: 2px;
+    font-size: 0.95em;
+}
+
+.rich-tooltip-container pre {
+    background-color: var(--tooltip-code-bg, var(--tooltip-code-bg-default));
+    padding: 5px 8px;
+    border-radius: 3px;
+    overflow-x: auto;
+    font-size: 0.9em;
+    line-height: 1.3;
+}
+

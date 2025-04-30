@@ -1,0 +1,6 @@
+include README.md
+include LICENSE
+recursive-include rich_tooltips/templates *
+recursive-include rich_tooltips/static *
+recursive-include docs *
+

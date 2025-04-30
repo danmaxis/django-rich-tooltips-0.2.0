@@ -1,0 +1,18 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{# Add custom CSS/JS for the rich tooltips plugin #}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static 'rich_tooltips/css/rich_tooltips.css' %}">
+{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  {# Load marked.js library from CDN #}
+  <script src="https://cdn.jsdelivr.net/npm/marked@15.0.11/lib/marked.umd.min.js"></script>
+  {# Load plugin JS deferred to ensure DOM is ready and marked.js is loaded #}
+  <script src="{% static 'rich_tooltips/js/rich_tooltips.js' %}" defer></script>
+{% endblock %}
+
