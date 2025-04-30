@@ -5,6 +5,13 @@
 
 A Django plugin to add rich, interactive HTML and Markdown tooltips to the admin interface, inspired by interfaces like Crusader Kings.
 
+## Screenshots
+![image](https://github.com/user-attachments/assets/fa073eb3-28af-448b-9e67-b424150197bf)
+![image](https://github.com/user-attachments/assets/47161c3e-dacf-4f5d-b7de-f913bcfbfabc)
+
+
+
+
 ## Features
 
 *   **Rich Content:** Display tooltips with raw HTML or Markdown.
