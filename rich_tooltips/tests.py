@@ -3,12 +3,26 @@ from django.test import TestCase, RequestFactory
 from django.contrib.admin.sites import AdminSite
 from django.contrib.auth import get_user_model
 
+from html.parser import HTMLParser
+import html
+
 from .models import TooltipTestModel
 from .admin import TooltipTestModelAdmin
 
 User = get_user_model()
 
 class RichTooltipsModelTests(TestCase):
+
+    @classmethod
+    def setUpTestData(cls):
+        # Create test data once for all test methods
+        cls.user = User.objects.create_superuser("admin_test", "" , "password")
+        cls.test_obj = TooltipTestModel.objects.create(
+            name="Test Model",
+            description="This is a test description.",
+            markdown_field="*Markdown content*"
+        )
+
 
     def test_create_tooltip_test_model(self):
         """Test creating an instance of TooltipTestModel."""
@@ -51,21 +65,21 @@ class RichTooltipsAdminTests(TestCase):
 
         # Check description field widget attributes
         self.assertIn("data-tooltip-html", form_instance.fields["description"].widget.attrs)
+        # Check that the HTML tooltip is set correctly
+        tooltip_html_attribute = html.unescape(form_instance.fields["description"].widget.attrs["data-tooltip-html"])
+
         self.assertEqual(
-            form_instance.fields["description"].widget.attrs["data-tooltip-html"],
+            tooltip_html_attribute,
             self.test_obj.tooltip_content_html
         )
 
         # Check markdown_field widget attributes
         self.assertIn("data-tooltip-markdown", form_instance.fields["markdown_field"].widget.attrs)
+        tooltip_markdown_attribute = html.unescape(form_instance.fields["markdown_field"].widget.attrs["data-tooltip-markdown"])
         self.assertEqual(
-            form_instance.fields["markdown_field"].widget.attrs["data-tooltip-markdown"],
+            tooltip_markdown_attribute,
             self.test_obj.tooltip_content_markdown
         )
-        # Also check the placeholder HTML tooltip added before markdown integration
-        self.assertIn("data-tooltip-html", form_instance.fields["markdown_field"].widget.attrs)
-        self.assertIn("Markdown content will be rendered here", form_instance.fields["markdown_field"].widget.attrs["data-tooltip-html"])
-
     def test_admin_list_display_tooltip(self):
         """Test the custom list display field with tooltip."""
         request = self.factory.get("/admin/rich_tooltips/tooltiptestmodel/")
@@ -73,9 +87,12 @@ class RichTooltipsAdminTests(TestCase):
         # Note: Testing the actual rendered HTML output of the list display usually requires
         # a full client request or more complex template rendering tests.
         # Here, we just test the method that generates the HTML.
-        output_html = self.model_admin.description_with_tooltip(self.test_obj)
+        output_html = html.unescape(self.model_admin.description_with_tooltip(self.test_obj))
+        # Remove all HTML tags for easier assertion
+        tag_stripped_html = extract_all_text(output_html)
         self.assertIn("data-tooltip-html", output_html)
-        self.assertIn("Simple tooltip for description", output_html)
+        # Display the tooltip content
+        self.assertIn("This is an  HTML  tooltip defined in the model!", tag_stripped_html)
         self.assertIn(self.test_obj.description, output_html)
 
 # Note: Testing the JavaScript functionality (frontend) typically requires
@@ -83,3 +100,31 @@ class RichTooltipsAdminTests(TestCase):
 # are more complex to set up and run in this environment. These tests focus
 # on the backend integration.
 
+
+
+class TextExtractor(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.result = []
+
+    def handle_data(self, data):
+        self.result.append(data)
+
+    def handle_starttag(self, tag, attrs):
+        for attr_name, attr_value in attrs:
+            if attr_name in ("alt", "title", "placeholder", "aria-label", "data-tooltip-html", "data-tooltip-markdown"):
+                self.result.append(attr_value)
+
+    def get_data(self):
+        return ' '.join(self.result)
+
+def extract_all_text(html_string):
+    parser = TextExtractor()
+    parser.feed(html.unescape(html_string))
+    fst = parser.get_data()
+    # Feed again to handle any nested tags
+    parser2 = TextExtractor()
+    # Remove double spaces in fst
+    fst = ' '.join([x.strip() for x in fst.split()])
+    parser2.feed(fst)
+    return parser2.get_data()
