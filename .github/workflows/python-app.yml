@@ -36,7 +36,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --exclude=.venv
     - name: Set Django settings
       run: |
-        export DJANGO_SETTINGS_MODULE=test_project/settings.py
+        export DJANGO_SETTINGS_MODULE=rich_tooltips/test_settings.py
     - name: Test with pytest
       run: |
         pytest rich_tooltips/tests.py
