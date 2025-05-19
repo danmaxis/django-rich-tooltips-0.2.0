@@ -11,6 +11,13 @@
     --tooltip-shadow-default: rgba(0,0,0,0.2);
 }
 
+span[data-tooltip-html] {
+    display: inline-block;
+    min-width: 24px;
+    min-height: 12px;
+    vertical-align: middle;
+} 
+
 .rich-tooltip-container {
     position: absolute;
     /* Use Django vars with fallbacks */
